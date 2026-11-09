@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Interactive concept UI for the NEUTRON Azure-native enterprise AI knowledge platform." />
+<title>NEUTRON — Interactive Product Preview</title>
+<style>
+:root {font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#213352;background:#f4f7fc;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+aside{width:245px;flex:none;background:linear-gradient(175deg,#102547,#091b36);color:#dbe7fa;padding:24px 14px;display:flex;flex-direction:column;gap:8px}
+.brand{display:flex;align-items:center;gap:12px;padding:0 10px 22px;color:#fff;font-size:23px;font-weight:850;letter-spacing:.07em}
+.logo{width:40px;height:40px;display:grid;place-items:center;border-radius:12px;background:linear-gradient(145deg,#3e8aff,#3157ec);font-size:24px}
+.caption{color:#93a9cd;text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:800;padding:10px 13px 4px}
+.nav{border:0;border-radius:11px;background:transparent;color:#d0ddf1;width:100%;text-align:left;padding:14px 15px;font-size:14px;display:flex;gap:12px;align-items:center}
+.nav.active,.nav:hover{background:#2761e5;color:#fff}
+.aside-foot{margin-top:auto;padding:18px 12px 5px;border-top:1px solid #314667;color:#93a9c6;font-size:12px}
+main{min-width:0;flex:1}
+.top{height:88px;padding:18px 30px;border-bottom:1px solid #e0e8f4;background:white;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.top h1{font-size:22px;margin:0 0 4px}
+.top p{margin:0;color:#8392aa;font-size:13px}
+.badge{display:inline-flex;align-items:center;background:#eaf2ff;color:#2c65c3;border-radius:999px;padding:7px 12px;font-size:12px;font-weight:750;white-space:nowrap}
+main .content{padding:26px 30px 55px;max-width:1500px;margin:auto}
+.view[hidden]{display:none}
+.card{background:#fff;border:1px solid #e1e9f4;border-radius:16px;box-shadow:0 4px 18px rgba(31,61,113,.035)}
+.padded{padding:22px}
+h2{font-size:22px;margin:0 0 7px;color:#192e4f}
+h3{font-size:16px;margin:0 0 8px}
+.muted{color:#7a8da9;font-size:13px;line-height:1.6}
+.small{font-size:12px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:14px}
+.columns{display:grid;grid-template-columns:minmax(0,1fr) 305px;gap:16px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid-four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.eyebrow{font-size:12px;text-transform:uppercase;color:#7b92b1;font-weight:800;letter-spacing:.08em}
+.primary{background:#2665e9;color:#fff;border:0;border-radius:10px;padding:11px 17px;font-weight:720}
+.secondary{border:1px solid #d9e4f3;background:#fff;color:#35577f;border-radius:10px;padding:10px 14px;font-weight:650}
+.primary:hover{background:#1551d8}
+.message{padding:18px;border-radius:14px;line-height:1.8;font-size:14px}
+.message.user{max-width:84%;margin:20px 0 14px auto;background:#eaf1fe}
+.message.bot{border:1px solid #e4eaf6;background:#fafcff}
+.message.bot strong{font-size:16px;color:#182f52}
+.sources{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.source{border:0;background:#e7f0ff;color:#255db8;border-radius:9px;padding:8px 11px;font-size:12px;font-weight:700}
+.composer{display:flex;gap:10px;margin-top:18px;border:1px solid #dce6f4;border-radius:13px;padding:8px}
+.composer input{flex:1;border:0;outline:0;min-width:0;padding:9px;background:transparent}
+.sourcecard{padding:17px;background:#f8faff;border:1px solid #e3eaf5;border-radius:12px;margin:12px 0;font-size:13px}
+.sourcecard p{font-size:12px;line-height:1.7;color:#617897}
+.stat-value{font-size:27px;font-weight:830;color:#163056;margin:10px 0 5px}
+.status{font-size:12px;border-radius:999px;padding:5px 9px;background:#e8f8f0;color:#168451;font-weight:750}
+.tile{border:1px solid #e4eaf4;padding:20px;border-radius:16px;background:#fff}
+.table-wrap{overflow:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+th{text-align:left;color:#7d8daa;background:#f4f7fc;font-size:11px;letter-spacing:.06em}
+td,th{padding:16px 14px;border-bottom:1px solid #edf1f7}
+.bar{height:10px;border-radius:99px;background:#eaf0f8;overflow:hidden;flex:1}
+.bar span{display:block;height:100%;background:linear-gradient(90deg,#2773e8,#2ab69c);border-radius:99px}
+.metric{display:flex;gap:13px;align-items:center;margin:21px 0}
+.metric label{width:135px;font-size:13px;color:#536e8a}
+.metric b{width:47px;text-align:right;font-size:13px}
+.diagram{height:220px;border-radius:15px;background:linear-gradient(165deg,#f3f7ff,#eaf5ff);display:flex;justify-content:space-around;align-items:end;gap:11px;padding:25px}
+.diagram i{width:12%;display:block;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#367ced,#63aaf6)}
+.input{border:1px solid #dce5f2;border-radius:9px;padding:10px 12px}
+.connect{display:flex;align-items:center;justify-content:space-between;gap:15px}
+.notice{padding:13px 17px;background:#fff8e8;color:#84661c;border:1px solid #f2dfad;border-radius:10px;margin-bottom:17px;font-size:12px}
+.activity{padding:14px 0;border-bottom:1px solid #ecf0f5;font-size:13px}
+@media(max-width:1100px){.grid-four{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:850px){aside{width:75px;padding:16px 9px}.brand{padding:0 5px 18px}.brand strong,.nav .name,.caption,.aside-foot{display:none}.nav{justify-content:center}.top{padding:12px 20px}.content{padding:16px!important}.columns,.grid{grid-template-columns:1fr}}
+@media(max-width:520px){.grid-four{grid-template-columns:1fr}.top h1{font-size:17px}.top p{font-size:11px}.badge{font-size:10px}.columns{display:block}.columns > *{margin-bottom:12px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside>
+ <div class="brand"><span class="logo">N</span><strong>NEUTRON</strong></div>
+ <div class="caption">Enterprise intelligence</div>
+ <button class="nav active" data-target="chat"><span>◧</span><span class="name">AI Chat</span></button>
+ <button class="nav" data-target="knowledge"><span>▤</span><span class="name">Knowledge Base</span></button>
+ <button class="nav" data-target="sources"><span>◉</span><span class="name">Data Sources</span></button>
+ <button class="nav" data-target="jobs"><span>↻</span><span class="name">Ingestion Jobs</span></button>
+ <button class="nav" data-target="evaluation"><span>◇</span><span class="name">Evaluation Lab</span></button>
+ <button class="nav" data-target="observability"><span>⌁</span><span class="name">Observability</span></button>
+ <button class="nav" data-target="admin"><span>⚙</span><span class="name">Administration</span></button>
+ <div class="aside-foot">● Organization admin<br><br>NEUTRON UI concept</div>
+</aside>
+<main>
+ <header class="top"><div><h1 id="pageTitle">AI Chat</h1><p id="pageDesc">Ask questions across approved enterprise documents</p></div><span class="badge">Interactive design preview</span></header>
+ <div class="content">
+ <div class="notice"><strong>Interface concept:</strong> All sample documents, companies, metrics, conversations, and actions on this page are simulated. No Azure services or live organizational data are connected.</div>
+
+ <section class="view" id="chat">
+  <div class="columns">
+   <div class="card padded">
+    <div class="row"><div><div class="eyebrow">Knowledge assistant</div><h2>Financial reporting</h2></div><span class="badge">Finance docs</span></div>
+    <div class="message user">How did our Q3 revenue change compared with Q2?</div>
+    <div id="answer" class="message bot"><strong>Q3 revenue increased by 12.4% compared with Q2.</strong><br/>Based on the sample financial documents, enterprise subscriptions and contract renewals were the primary growth drivers.<div class="sources"><button class="source" data-source="finance">Financial Report · p. 6</button><button class="source" data-source="investor">Investor Update · p. 3</button></div></div>
+    <form class="composer" id="chatForm"><input id="prompt" aria-label="Question" placeholder="Ask a question about your documents..." required /><button class="primary" type="submit">Send →</button></form>
+    <p class="muted small">Try a new question to see a simulated response and citation workflow.</p>
+   </div>
+   <div class="card padded"><h3>Source evidence</h3><div class="sourcecard"><b>Q3_Financial_Report.pdf</b><p>Page 6 · Revenue highlights<br/>“Q3 revenue increased by 12.4%...”</p><button class="secondary" data-source="finance">Inspect source</button></div><div class="sourcecard"><b>Investor_Update_Q3.pdf</b><p>Page 3 · Enterprise subscriptions and renewals.</p><button class="secondary" data-source="investor">Inspect source</button></div><div class="sourcecard" id="sourceDetail" aria-live="polite">Select a source to inspect a preview of citation details.</div></div>
+  </div>
+ </section>
+
+ <section class="view" id="knowledge" hidden>
+  <div class="row" style="margin-bottom:18px"><div><h2>Knowledge Base</h2><div class="muted">Organize indexed documents, access policies and collections</div></div><button class="primary" id="uploadDemo">+ Upload document</button></div>
+  <div class="card padded"><div class="row" style="margin-bottom:18px"><strong>Sample documents</strong><input class="input" type="search" id="docSearch" placeholder="Search documents" /></div><div class="table-wrap"><table><thead><tr><th>Document</th><th>Collection</th><th>Access</th><th>Status</th></tr></thead><tbody id="docsBody"><tr><td>Q3_Financial_Report.pdf</td><td>Finance</td><td>Finance team</td><td><span class="status">Indexed</span></td></tr><tr><td>Employee_Handbook.pdf</td><td>HR</td><td>All employees</td><td><span class="status">Indexed</span></td></tr><tr><td>Investor_Update_Q3.pdf</td><td>Finance</td><td>Finance team</td><td><span class="status">Indexed</span></td></tr><tr><td>Vendor_Agreement.docx</td><td>Legal</td><td>Legal team</td><td><span class="status">Indexed</span></td></tr></tbody></table></div></div>
+ </section>
+
+ <section class="view" id="sources" hidden>
+  <div class="row" style="margin-bottom:17px"><div><h2>Enterprise data sources</h2><p class="muted">Connect authorized repositories and schedule incremental synchronization</p></div><button class="primary" id="addSourceDemo">+ Add source</button></div>
+  <div class="grid"><div class="tile"><h3>☁ Azure Blob Storage</h3><div class="muted">Private document container</div><p><span class="status">Connected</span></p><div class="stat-value">1,248</div><div class="muted">Indexed documents</div><p class="muted" id="blobSync">Last synchronized: 10:15 AM</p><button class="secondary simulateSync">Simulate sync</button></div><div class="tile"><h3>◉ Microsoft SharePoint</h3><div class="muted">HR and finance libraries</div><p><span class="status">Connected</span></p><div class="stat-value">3,562</div><div class="muted">Indexed documents</div><p class="muted">Access-policy synchronization</p><button class="secondary simulateSync">Simulate sync</button></div><div class="tile"><h3>▣ Azure SQL</h3><div class="muted">Read-only business views</div><p><span class="status">Connected</span></p><div class="stat-value">18</div><div class="muted">Indexed datasets</div><p class="muted">Daily scheduled extraction</p><button class="secondary simulateSync">Simulate sync</button></div></div>
+  <div class="card padded" style="margin-top:18px"><h3>Connector activity</h3><div id="syncLog" class="activity">Last completed sample sync: Azure Blob • 10:15 AM</div></div>
+ </section>
+
+ <section class="view" id="jobs" hidden>
+  <div class="row" style="margin-bottom:18px"><div><h2>Ingestion Jobs</h2><p class="muted">Queue status, retries, Databricks batch transformations and indexing</p></div><button class="secondary" id="retryDemo">Simulate retry</button></div>
+  <div class="grid-four"><div class="tile"><div class="muted">Completed</div><div class="stat-value">294</div></div><div class="tile"><div class="muted">Processing</div><div class="stat-value">3</div></div><div class="tile"><div class="muted">Queued</div><div class="stat-value">12</div></div><div class="tile"><div class="muted">Requires review</div><div class="stat-value" id="failedCount">1</div></div></div>
+  <div class="card padded" style="margin-top:18px"><h3>Recent jobs</h3><div class="table-wrap"><table><thead><tr><th>Job ID</th><th>Source</th><th>Pipeline</th><th>Status</th></tr></thead><tbody><tr><td>JOB-1048</td><td>Azure Blob</td><td>Azure Functions → AI Search</td><td><span class="status">Completed</span></td></tr><tr><td>JOB-1047</td><td>SharePoint</td><td>Databricks / PySpark</td><td><span class="status">Completed</span></td></tr><tr><td>JOB-1046</td><td>Azure SQL</td><td>Delta Lake ETL</td><td id="retryStatus">Review required</td></tr></tbody></table></div></div>
+ </section>
+
+ <section class="view" id="evaluation" hidden>
+  <div class="row" style="margin-bottom:18px"><div><h2>AI Evaluation Lab</h2><p class="muted">Golden datasets, retrieval quality and regression comparisons</p></div><button class="primary" id="evalRun">Run simulated evaluation</button></div>
+  <div class="grid-four"><div class="tile"><div class="muted">Recall@5</div><div class="stat-value" id="recall">91.7%</div></div><div class="tile"><div class="muted">Groundedness</div><div class="stat-value">96.2%</div></div><div class="tile"><div class="muted">Citation accuracy</div><div class="stat-value">95.8%</div></div><div class="tile"><div class="muted">Abstention checks</div><div class="stat-value">93.0%</div></div></div>
+  <div class="card padded" style="margin-top:18px"><h3>Quality dimensions</h3><div class="metric"><label>Groundedness</label><div class="bar"><span style="width:96.2%"></span></div><b>96.2%</b></div><div class="metric"><label>Retrieval recall</label><div class="bar"><span style="width:91.7%"></span></div><b>91.7%</b></div><div class="metric"><label>Citation quality</label><div class="bar"><span style="width:95.8%"></span></div><b>95.8%</b></div><p class="muted" id="evalLog">Example evaluation run • dataset: sample_finance_v1</p></div>
+ </section>
+
+ <section class="view" id="observability" hidden>
+  <div class="row" style="margin-bottom:18px"><div><h2>Observability & Cost</h2><p class="muted">Trace request stages, measure latency, and compare usage</p></div><select class="input" id="dateRange"><option>Last 7 days</option><option>Last 30 days</option></select></div>
+  <div class="grid-four"><div class="tile"><div class="muted">Total requests</div><div class="stat-value" id="requests">3,421</div></div><div class="tile"><div class="muted">P95 latency</div><div class="stat-value">1.84s</div></div><div class="tile"><div class="muted">Estimated model cost</div><div class="stat-value" id="cost">$42.18</div></div><div class="tile"><div class="muted">Error rate</div><div class="stat-value">0.6%</div></div></div>
+  <div class="columns" style="margin-top:18px"><div class="card padded"><h3>Request volume</h3><p class="muted">Illustrative daily workload</p><div class="diagram"><i style="height:37%"></i><i style="height:46%"></i><i style="height:54%"></i><i style="height:51%"></i><i style="height:68%"></i><i style="height:77%"></i><i style="height:92%"></i></div></div><div class="card padded"><h3>Trace inspection</h3><div class="activity">Authentication <b style="float:right">35 ms</b></div><div class="activity">Embedding <b style="float:right">110 ms</b></div><div class="activity">Azure AI Search <b style="float:right">180 ms</b></div><div class="activity">Azure OpenAI <b style="float:right">1,400 ms</b></div><p class="muted">Privacy-safe metadata: no raw private prompts in the default trace.</p></div></div>
+ </section>
+
+ <section class="view" id="admin" hidden>
+  <h2>Administration</h2><p class="muted">Single-organization roles, document permissions, security and settings</p>
+  <div class="grid"><div class="tile"><h3>Access controls</h3><p class="muted">Entra ID authentication, role mapping and document-level restrictions.</p></div><div class="tile"><h3>Credential management</h3><p class="muted">Managed identities, Azure Key Vault, connector permission scopes.</p></div><div class="tile"><h3>Privacy and retention</h3><p class="muted">Audit trails, trace redaction, permission revocation and deletion policies.</p></div></div>
+  <div class="card padded" style="margin-top:18px"><h3>Role examples</h3><div class="table-wrap"><table><thead><tr><th>Role</th><th>Permitted tools</th><th>Knowledge access</th></tr></thead><tbody><tr><td>Employee</td><td>Chat, own history, citations</td><td>Authorized collections only</td></tr><tr><td>Knowledge Admin</td><td>Manage sources and sync</td><td>Assigned source scope</td></tr><tr><td>AI Engineer</td><td>Evaluations and traces</td><td>No automatic document override</td></tr><tr><td>Platform Admin</td><td>Identity and settings</td><td>Explicit audited grants</td></tr></tbody></table></div></div>
+ </section>
+
+ </div>
+</main>
+</div>
+<script>
+(function(){
+'use strict';
+var titles={chat:['AI Chat','Ask questions across approved enterprise documents'],knowledge:['Knowledge Base','Manage documents and permission-aware collections'],sources:['Data Sources','Connect existing enterprise repositories'],jobs:['Ingestion Jobs','Inspect processing and background tasks'],evaluation:['Evaluation Lab','Measure retrieval and answer quality'],observability:['Observability & Costs','Diagnose requests and manage AI spending'],admin:['Administration','Identity, roles, security and retention']};
+function show(name){document.querySelectorAll('.view').forEach(function(v){v.hidden=v.id!==name});document.querySelectorAll('[data-target]').forEach(function(b){b.classList.toggle('active',b.dataset.target===name)});document.getElementById('pageTitle').textContent=titles[name][0];document.getElementById('pageDesc').textContent=titles[name][1];}
+document.querySelectorAll('[data-target]').forEach(function(b){b.addEventListener('click',function(){show(b.dataset.target)})});
+document.querySelectorAll('[data-source]').forEach(function(b){b.addEventListener('click',function(){document.getElementById('sourceDetail').textContent=b.dataset.source==='finance'?'Q3_Financial_Report.pdf • page 6 • citation supports the sample 12.4% revenue claim.':'Investor_Update_Q3.pdf • page 3 • citation describes renewals and enterprise subscriptions.'})});
+document.getElementById('chatForm').addEventListener('submit',function(ev){ev.preventDefault();var q=document.getElementById('prompt').value.trim();if(!q)return;document.getElementById('answer').innerHTML='<strong>Simulated NEUTRON response</strong><br>Your question was: '+q.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})+'<br><br>This preview demonstrates the conversation UI only. The real backend will retrieve authorized documents through Azure AI Search and produce an evidence-grounded answer with Azure OpenAI.';document.getElementById('prompt').value='';});
+document.getElementById('docSearch').addEventListener('input',function(e){var q=e.target.value.toLowerCase();document.querySelectorAll('#docsBody tr').forEach(function(r){r.hidden=!r.textContent.toLowerCase().includes(q)})});
+document.getElementById('uploadDemo').addEventListener('click',function(){alert('UI preview: real file validation, private Azure Blob upload and ingestion jobs will be implemented in FastAPI.')});
+document.getElementById('addSourceDemo').addEventListener('click',function(){alert('UI preview: connector authorization, source scoping, and synchronization will be implemented with Azure services.')});
+document.querySelectorAll('.simulateSync').forEach(function(b){b.addEventListener('click',function(){document.getElementById('syncLog').textContent='Sample synchronization triggered for '+b.closest('.tile').querySelector('h3').textContent+' • demo only';})});
+document.getElementById('retryDemo').addEventListener('click',function(){document.getElementById('retryStatus').textContent='Retry simulated';document.getElementById('failedCount').textContent='0';});
+document.getElementById('evalRun').addEventListener('click',function(){document.getElementById('evalLog').textContent='Simulated evaluation finished: sample_finance_v1 • No model/API call was made.';document.getElementById('recall').textContent='91.7%';});
+document.getElementById('dateRange').addEventListener('change',function(e){document.getElementById('requests').textContent=e.target.value==='Last 30 days'?'12,807':'3,421';document.getElementById('cost').textContent=e.target.value==='Last 30 days'?'$149.62':'$42.18';});
+})();
+</script>
+</body>
+</html>
